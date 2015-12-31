@@ -47,7 +47,7 @@
     //  files in our program can access it.
     //  Let's explicitly put it on the window object.
 
-  window.gameBoard = makeGameBoard(8);
+window.gameBoard = makeGameBoard(8);
 
   // You might be wondering where the makeGameBoard function came from
     //  and why we can just invoke it, even though we haven't seen it declared
@@ -59,7 +59,7 @@
     //  to investigate it more.
     //  Try that now with gameBoard to figure it out!
 
-  console.log('our gameBoard is:', gameBoard);
+// console.log('our gameBoard is:', gameBoard);
 
   // We've included the underscore.js library on the page,
     //  so feel free to use it throughout this project.
@@ -76,6 +76,8 @@
     //  in the gameBoard.
 
     // Let's go through and console.log each item in that row.
+
+// SH - moved this code, console.log lower..
 
   // What you'll see is 8 different objects logged to your console.
     //  Click into them to explore them more.
@@ -102,7 +104,7 @@
     //  We could chain this together even more.
     //  Explain with your pair each individual operation that's going on when we say:
 
-  gameBoard[3][5].color = 'black';
+gameBoard[3][5].color = 'black';
 
   // Alright! Now that we've figured out the gameBoard is an array of arrays,
     //  and that each square is just an object with some useful properties on it,
@@ -116,6 +118,11 @@
     // Can we name this parameter something obvious that makes it clear what it
     //    represents?
     // Let's change every square to a different color of your choosing.
+
+_.each(gameBoard[0], function(square){
+  //console.log(square);
+  square.color = 'grey';
+});
 
     // If you're not familiar with colors in JS,
       //  you can do this in three main ways:
@@ -138,6 +145,11 @@
       //    map returns an array of values to you.
       // So what we're going to do in the end is overwrite the second row
       //    of the gameBoard with the mutated array map returns to us.
+
+var colors = ['yellow', 'green', 'yellow', 'green', 'yellow', 'green', 'yellow', 'green'];
+_.map(gameBoard[1], function(square, column){
+  square.color = colors[column];
+});
 
       // Let's pseudocode!
         // map through an array of colors
@@ -193,6 +205,12 @@
           // Change the color in the inner each statement to green,
           //    just to make sure everything's working.
 
+  _.each(gameBoard, function(row){
+    _.each(row, function(square, colIndex){
+      square.color = 'green';
+    });
+  });
+
           // Remember, when in doubt, console.log
             //  the item you're working with to make sure
             //  you understand what it is at each step!
@@ -219,6 +237,13 @@
         //  changing the colors of all the squares to purple this time.
         //  Remember that to do this, you'll have to first create an
         //    array that is just filled with the word purple 8 times.
+
+var colors = ['purple', 'purple', 'purple', 'purple', 'purple', 'purple', 'purple', 'purple', ];
+_.each(gameBoard, function(row){
+  _.map(row, function(square, colIndex){
+    square.color = colors[colIndex];
+  })
+});
 
   // One of the things you'll need to be great at as an engineer is debugging.
     //  Debugging is nothing more than problem solving, or having fun with a puzzle.
@@ -251,8 +276,8 @@
       //  and make sure it worked by opening up your browser.
       //  Uncomment the following lines to make this work.
 
-    // makePiece(gameBoard, [3,5], 'babyDino');
-    // gameBoard[3][5].gamePiece.imageURL = "http://cs307103.vk.me/v307103801/4aad/kGuRYIMoJnw.jpg";
+makePiece(gameBoard, [3,5], 'babyDino');
+gameBoard[3][5].gamePiece.imageURL = "http://cs307103.vk.me/v307103801/4aad/kGuRYIMoJnw.jpg";
 
     // If you're wondering where this makePiece function came from,
       //  it was defined in the helperFunctions.js file and
@@ -268,8 +293,19 @@
         //  Do you remember the property name where we're storing gamePiece
         //  on each squareObj?
 
+var arrayOfPiecesRow3 = _.filter(gameBoard[3], function(square, colIndex){
+  return square.gamePiece !== '';
+});
+//console.log(arrayOfPiecesRow3);
+
     // Now try adding gamePieces to a couple of different rows throughout
       //  the board using this makePiece funcion.
+
+// I'll put my pieces on a diagonal line from (0,5) to (5,0)
+for (var row = 0, col = 5; row <= 5; row++, col--){
+  makePiece(gameBoard, [row, col], 'babyDino');
+  gameBoard[row][col].gamePiece.imageURL = "http://cs307103.vk.me/v307103801/4aad/kGuRYIMoJnw.jpg";
+}
 
       // Go ahead and find all the pieces on the whole board, organized by row.
         // The output should be an array that is filled with nested arrays,
@@ -279,6 +315,30 @@
       // example output: for a gameBoard that has
         //  three gamePieces on row 3 and two gamePieces on row 5.
         //  "results after filter: [Array[0], Array[0], Array[0], Array[3], Array[0], Array[2], Array[0], Array[0]]"
+
+// via map - each
+var piecesByRow = _.map(gameBoard, function(row){
+  var piecesThisRow = [];
+  _.each(row, function(square){
+    if (square.gamePiece !== '') {
+      piecesThisRow.push(square);
+    };
+  });
+  return piecesThisRow;
+});
+//console.log(piecesByRow);
+
+// via map - reduce
+var piecesByRow = _.map(gameBoard, function(row){
+  return _.reduce(row, function(piecesThisRow, square){
+    if (square.gamePiece !== ''){
+      piecesThisRow.push(square);
+    };
+    return piecesThisRow;
+  }, []);
+});
+//console.log(piecesByRow);
+
 
       // Think about whether you might want to use each or map.
         //  Discuss with your pair why you might want to choose one over the other.
