@@ -7,7 +7,7 @@
     //  This is because in boardBasics.js we put it on the window object.
     //  You can test this by trying to print the gameBoard variable to the console:
 
-  // console.log('gameBoard object in gamePieces.js is:', gameBoard);
+  //console.log('gameBoard object in gamePieces.js is:', gameBoard);
 
   // Remember that we'd just used each and filter
     //  to find all the gamePieces on the board:
@@ -30,6 +30,16 @@
     //  filled with all the values contained in each subarray?
       // Hint: what if we tried passing in an empty array as the starting value?
 
+var gamePiecesArray = _.reduce(gameBoard, function(accumulator, row){
+  _.each(row, function(square){
+    if (square.gamePiece !== ''){
+      accumulator.push(square);
+    }
+  });
+  return accumulator;
+}, []);
+//console.log(gamePiecesArray);
+
   // This ends our intro to the capstone project.
     //  By this point you should be pretty familiar with
     //  - the gameBoard,
@@ -41,41 +51,89 @@
     //    accomplishing tasks that are given to you.
     //  We want you to get used to that feeling with these upcoming exercises.
 
+// ===========================================================================
+
+// === RESET GAMEBOARD ===
+window.gameBoard = makeGameBoard(8);
+
 
   // 1. Create an array called piecesToAdd that
-  //  holds the names of each of the pieces we'll create for each player.
-      //  For example:
-      //  ['kuddlyKoala', 'babyDino','babyDino', 'babyDino', 'fierceDragon', 'lazyPanda', 'lazyPanda']
+    //  holds the names of each of the pieces we'll create for each player.
+    //  For example:
+    //  ['kuddlyKoala', 'babyDino','babyDino', 'babyDino', 'fierceDragon', 'lazyPanda', 'lazyPanda']
+
+  var piecesToAdd = ['kuddlyKoala', 'babyDino','babyDino', 'babyDino', 'fierceDragon', 'lazyPanda', 'lazyPanda', 'fierceDragon'];
 
   // 2. Create an array of the playerNames.
     //  For example: ['hermoineGranger', 'graceHopper']
 
+  var playerNames = ["you", "me", "computer", "octopus"]
+
   // 3. Now use two (nested) each loops to add these pieces to the board.
-  //  Remember that we have the makePiece function!
+    //  Remember that we have the makePiece function!
 
-    // Question1:
-      //  How can you make sure each piece ends up
-      //  on a different square on the board?
+    //* for reference:
+    // makePiece(gameBoard, [3,5], 'babyDino');
+    // gameBoard[3][5].gamePiece.imageURL = "http://cs307103.vk.me/v307103801/4aad/kGuRYIMoJnw.jpg";
 
-    // Question2:
-      //  What happens when you get to the end of a line?
+      // Question1:
+        //  How can you make sure each piece ends up
+        //  on a different square on the board?
 
-      //  How do you know to start on the first position of the next line?
+    //* push and splice pieces onto, out of this array. holds coordinates.
+    var occupiedSquares = [];
 
-      //  Think if you can use the modulus "%" operator for this.
-        //  If you're not familiar with the modulus operator,
-        //  it gives you the remainder from dividing two numbers.
-        //  So if we divide 12 by 8, that gives us a remainder of 4
-        //  (we have 4 left over after taking 8 out of 12).
-        //  As always, feel free to google around for more information!
+      // Question2:
+        //  What happens when you get to the end of a line?
 
-    // Question3:
-      //  How can we line these pieces up on opposite sides of the board?
+    //* index of each piece must be [0..7][0..7].
+    //  when col index ===7, flip to flip colindex => 0 and row index increments.
 
-    // BEST PRACTICE:
-      //  Pseudocode the specific steps you'll need to accomplish.
-      //  This takes a seemingly large and complex task and
-      //  breaks it down into solvable chunks.
+        //  How do you know to start on the first position of the next line?
+
+    //* when column index flips from 7 -> 0, increment row by 1
+
+        //  Think if you can use the modulus "%" operator for this.
+          //  If you're not familiar with the modulus operator,
+          //  it gives you the remainder from dividing two numbers.
+          //  So if we divide 12 by 8, that gives us a remainder of 4
+          //  (we have 4 left over after taking 8 out of 12).
+          //  As always, feel free to google around for more information!
+
+    //* ok, since we have only 8 columns and 8 rows, we can use a number where
+      // squareNum = 0..63 squares numbered from 0 to 63 accross top-L to bottom-R
+      // column = squareNum % 8
+      // row = Math.floor(squareNum/8);
+      // squareNum = row * 8 + column;
+
+      // Question3:
+        //  How can we line these pieces up on opposite sides of the board?
+
+    //* you mean top and bottom rows, or left and right columns ?
+      //  I say top and bottom rows. set row to 0 or 7 respectively.
+      //  enumerate col 0->7. actually could take bottom row and flip it over
+      // via mod 64. so if you have a number from 64, it starts over at 0.
+      // so just keep incrementing. Not great idea though.
+      // I'd say set increment columns, with row set to 0 and 7.
+      // If using square numbers, inc colIndex, and use calculation for square above.
+
+      // BEST PRACTICE:
+        //  Pseudocode the specific steps you'll need to accomplish.
+        //  This takes a seemingly large and complex task and
+        //  breaks it down into solvable chunks.
+
+  _.each(piecesToAdd, function(name, colIndex){
+
+    // top row
+    makePiece(gameBoard, [0,colIndex], name);
+    gameBoard[0][colIndex].gamePiece.imageURL = "http://cs307103.vk.me/v307103801/4aad/kGuRYIMoJnw.jpg";
+
+    // bottom row in mirror image
+    makePiece(gameBoard, [7,7-colIndex], name);
+    gameBoard[7][7-colIndex].gamePiece.imageURL = "http://cs307103.vk.me/v307103801/4aad/kGuRYIMoJnw.jpg";
+  });
+
+  //console.log(getPiecesInPlay(gameBoard));
 
   // 4. Great!
     //  Now we have two fierce opposing armies arranged on the board.
@@ -92,11 +150,21 @@
         //  returning an arr of the squareObj (s) in that row
         //  that have a gamePiece on them.
 
+  var singleRow = gameBoard[0];
+  var piecesInRow = _.filter(singleRow, function(square, colIndex){
+    return (square.gamePiece !== '');
+  });
+  //console.log (piecesInRow);
+
       // B. Use map to change each of the objects
         //  in the array returned from filter
         //  to an array of their positions.
         //  Positions are a property saved as a property on each object.
         //  Console.log each object to check it out!
+var locOfPiecesInRow = _.map(piecesInRow, function(piece){
+  return piece.position;
+});
+//console.log(locOfPiecesInRow);
 
       // C. Use each or map to repeat this process on each row in your gameBoard.
         //  At this point, you should have an array of subarrays.
@@ -105,6 +173,35 @@
 
       // D. Now, let's use reduce to reduce this down to a single array
         //  that contains the position of all the squares we're interested in.
+
+// Uses the getPiecesInPlay function I wrote in 1_boardBasics.js
+getOccupiedPositions = function()  {
+  var occupiedSquares = _.map(getPiecesInPlay(), function(piece){
+    return piece.position;
+    });
+  return occupiedSquares;
+};
+//console.log(getOccupiedPositions());
+
+// translates array of position arrays to array of square numbers for easy id
+getOccupiedSquares = function(occupiedPositions){
+  return _.map(occupiedPositions, function(row0Column1){
+    return (row0Column1[0] * 8 + row0Column1[1]);
+  });
+};
+//console.log(getOccupiedSquares(getOccupiedPositions()));
+
+// That's great. But I prefer seeing the squares as coordinates
+printOccupiedCoords = function(offset){
+  // optionalFlag will print coordinates with a 1,1 base, instead of 0,0
+  offset = offset || 0;
+  occupiedCoords = _.map(getOccupiedPositions(), function(arrayRowCol){
+    return ('' + (arrayRowCol[0] + offset) + (arrayRowCol[1] + offset));
+  });
+console.log(occupiedCoords);
+};
+printOccupiedCoords();
+printOccupiedCoords(1);
 
     // Whew!
     // You've now used all four of

@@ -301,11 +301,11 @@ var arrayOfPiecesRow3 = _.filter(gameBoard[3], function(square, colIndex){
     // Now try adding gamePieces to a couple of different rows throughout
       //  the board using this makePiece function.
 
-// I'll put my pieces on a diagonal line from (0,5) to (5,0)
-for (var row = 0, col = 5; row <= 5; row++, col--){
-  makePiece(gameBoard, [row, col], 'babyDino');
-  gameBoard[row][col].gamePiece.imageURL = "http://cs307103.vk.me/v307103801/4aad/kGuRYIMoJnw.jpg";
-}
+  // I'll put my pieces on a diagonal line from (0,5) to (5,0)
+  for (var row = 0, col = 5; row <= 5; row++, col--){
+    makePiece(gameBoard, [row, col], 'babyDino');
+    gameBoard[row][col].gamePiece.imageURL = "http://cs307103.vk.me/v307103801/4aad/kGuRYIMoJnw.jpg";
+  }
 
       // Go ahead and find all the pieces on the whole board, organized by row.
         // The output should be an array that is filled with nested arrays,
@@ -339,19 +339,40 @@ var piecesByRow = _.map(gameBoard, function(row){
 });
 //console.log(piecesByRow);
 
+// via map - filter
+var piecesByRow = _.map(gameBoard, function(row){
+  return _.filter(row, function(square){
+    return (square.gamePiece !== '')
+  }, []);
+});
+//console.log(piecesByRow);
 
-      // Think about whether you might want to use each or map.
-        //  Discuss with your pair why you might want to choose one over the other.
-        //  Hint: Remember that each can't return anything,
-        //    but it can have side effects
-        //    (that is, modify variables it has scope access to).
-        //  On the other hand, map DOES return something... what does it return?
+// function that returns a 1D array of all the pieces on the gameBoard
+getPiecesInPlay = function()  {
+  piecesByRow = _.map(gameBoard, function(row){
+    return _.filter(row, function(square){
+      return (square.gamePiece !== '');
+    });
+  }, []);
+  return _.flatten(piecesByRow);
+}
+//console.log(getPiecesInPlay());
 
-        // Bonus: Write two implementations!
-          //  One using each and one using map.
-          //  Be sure to label the output
-          //    "results after filter using each" &
-          //    "results after filter using map"
+
+
+//
+    // Think about whether you might want to use each or map.
+      //  Discuss with your pair why you might want to choose one over the other.
+      //  Hint: Remember that each can't return anything,
+      //    but it can have side effects
+      //    (that is, modify variables it has scope access to).
+      //  On the other hand, map DOES return something... what does it return?
+
+      // Bonus: Write two implementations!
+        //  One using each and one using map.
+        //  Be sure to label the output
+        //    "results after filter using each" &
+        //    "results after filter using map"
 
   // Before we move onto the next section, consider commenting out
     //  any console.logs you have so far.
