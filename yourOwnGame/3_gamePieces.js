@@ -198,12 +198,12 @@ printOccupiedCoords = function(offset){
   occupiedCoords = _.map(getOccupiedPositions(), function(arrayRowCol){
     return ('' + (arrayRowCol[0] + offset) + (arrayRowCol[1] + offset));
   });
-console.log(occupiedCoords);
+//console.log(occupiedCoords);
 };
-printOccupiedCoords();
+//printOccupiedCoords();
 printOccupiedCoords(1);
 
-    // Whew!
+  // Whew!
     // You've now used all four of
     // the canonical functional programming functions!
       //  Great job getting here.
@@ -229,6 +229,11 @@ printOccupiedCoords(1);
         //  and get a link to that image.
         //  Set the imageURL property equal to that string, and voila!
         //  Your image will appear on the screen.
+gamePieceImageURLs = ["images/tri-down-upDiag-cutout.png",
+                   "images/tri-down-upDiag-solid.png",
+                   "images/tri-up-downDiag-cutout.png",
+                   "images/tri-up-downDiag-solid.png"
+                  ];
 
   // 5. Use filter to grab all gamePieces of the same type, and
     //  then use each to iterate through them and set their movement descriptions.
@@ -237,6 +242,8 @@ printOccupiedCoords(1);
       //  you'd want your various pieces to do.
       //  For example, maybe scaredKitty goes and hides in the corner,
       //  and impetuousDragon frequently flies off and leaves the board entirely.
+
+
 
   // 6. Use reduce to create an object that has a tally of all our gamePieces.
 
@@ -247,10 +254,60 @@ printOccupiedCoords(1);
       //   hobblingPirate:8,
       //   groupHuggers:12 }
 
-    //  You should be able to do this from scratch by
-    //  just using reduce inside of another reduce if you're feeling ambitious!
+var getTally = function(array){
+  var final = _.reduce(array, function(tallies, piece){
+    var name = piece.gamePiece.typeOfPiece;
+    if (!tallies[name]) {
+      tallies[name] = 1;
+    } else {
+      tallies[name]++;
+    };
+    return tallies;
+  }, {});
+  return final;
+};
 
-  // CARRY ON...
+var tally = getTally(getPiecesInPlay());
+//console.log(tally);
+
+var getGamePieceTypes = function(tallyObj){
+  return _.map(tallyObj, function(total, propName){ return propName });
+};
+var gamePieceTypes = getGamePieceTypes(tally);
+//console.log(gamePieceTypes);
+
+//* loop through our game pieces
+//  find index of our gamepiece in the gamePieceTypes array
+//  use this index with the
+//  gamePieceMovement array and gamePieceImages array
+//  to obtain the values to assign this current game piece's
+//  movement and url properties.
+
+var gamePieceMovementDescriptions = ["move left and up",
+                                     "move right and up",
+                                     "move left and down",
+                                     "move right and down"
+                                     ];
+
+var assignGamePiecePersonalities = function(piecesInPlay){
+  _.each(piecesInPlay, function(piece){
+    index = gamePieceTypes.indexOf(piece.gamePiece.typeOfPiece);
+    if (index === -1) console.log('ERROR in assignGamePiecePersonalities');
+    else {
+      piece.imageURL = gamePieceImageURLs[index];
+      piece.movementDescription = gamePieceMovementDescriptions[index];
+    };
+  });
+};
+
+var piecesInPlay = getPiecesInPlay();
+assignGamePiecePersonalities(piecesInPlay);
+//console.log(piecesInPlay);
+
+    // You should be able to do this from scratch by
+    // just using reduce inside of another reduce if you're feeling ambitious!
+
+// CARRY ON...
   //  You're doing great!!!
   //  Go ahead and check out the file called
   //    '4_gamePlay.js'

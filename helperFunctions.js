@@ -116,9 +116,9 @@ var renderGameBoard = function(gameBoard) {
 // NOTE: You have to uncomment these lines to make program invoke
   //  the clickHandler function you're building out in yourOwnGame.js.
 
-// $(document).on('click', '.gameSquare', function() {
-//   clickHandler($(this).data('position'));
-// });
+$(document).on('click', '.gameSquare', function() {
+  clickHandler($(this).data('position'));
+});
 
 //here we're going to keep track of the count of all pieces added to our gameBoard.
 var totalPieceCount = {};

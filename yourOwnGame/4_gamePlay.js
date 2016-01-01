@@ -15,15 +15,47 @@
     // TODO: Uncomment the lines below and
     //  see what happens when you click on a square on the board!
 
-      // window.clickHandler = function(positionArr) {
-      //   var row = positionArr[0];
-      //   var column = positionArr[1];
-      //   console.log('the user clicked on square:', gameBoard[row][column]);
-      //    // IMPORTANT: make sure that renderGameBoard(gameBoard)
-              // always comes at the end of your clickHandler function.
-              // Otherwise, your lovely UI enhancements won't show up!
-      //   renderGameBoard(gameBoard);
-      // };
+  window.clickHandler = function(positionArr) {
+    var row = positionArr[0];
+    var column = positionArr[1];
+    console.log('the user clicked on square:', gameBoard[row][column]);
+
+    // #9 now use  see is square is occupied
+    var piece = gameBoard[row][column].gamePiece;
+    if (piece !== ''){
+      piece.highlightSquares(row, column);
+    } ;
+
+  /* for #9 must remove this, this was # and #
+    // copied from the helperFunctions.js
+    var telegraphBlue1 = '#48B9C4';   // even (dark)
+    var telegraphBlue2 = '#1A3D6D';   // odd  (light)
+
+    // if clicked on square is pink, then return it back to it's orig color.
+    var square = gameBoard[row][column];
+    if (square.color === 'pink'){
+      var isOdd = (row + column) % 2
+      square.color = (isOdd ? telegraphBlue2 : telegraphBlue1);
+    } else {
+   */
+  /* for #9 must remove this, this was # and #
+    // turn all squares in clicked row pink
+      _.each(gameBoard[row], function(square){
+        square.color = 'pink';
+      });
+    // turn all squares in clicked column pink
+      _.each(gameBoard, function(boardRow){
+        boardRow[column].color = 'pink';
+      });
+    };
+    */
+
+    renderGameBoard(gameBoard);
+        // IMPORTANT:
+          // make sure that renderGameBoard(gameBoard)
+          // always comes at the end of your clickHandler function.
+          // Otherwise, your lovely UI enhancements won't show up!
+  };
 
     // Write some logic inside of clickHandler that
       //  highlights all the squares in the row that has been clicked on
@@ -39,12 +71,34 @@
     //  There are several different approaches that will work well here.
     //  Choose whichever one you want
       //  (but do keep practicing functional programming
-        //  - that will be incredibly valuable,
-        //  particularly if it's still a bit painful for you).
+      //    - that will be incredibly valuable,
+      //    particularly if it's still a bit painful for you).
       //  Just keep in mind that the end goal is to return the board to
       //    a "normal" looking state, where the color of the pieces alternates,
       //    as it originally did, with the gamePieces
       //    still being displayed on the relevant squares.
+
+  //* This function is not used. I misunderstood the instructions
+  var resetGameBoardColors = function(){
+
+    // These should have been made global variables
+    //  copied from the helperFunctions file
+    var telegraphBlue1 = '#48B9C4';   // even (dark)
+    var telegraphBlue2 = '#1A3D6D';   // odd  (light)
+
+    _.each(gameBoard, function(row, rowIndex){
+      _.each(row, function(square, colIndex){
+        // if row + col is even, make dark blue, else make light blue
+        if ((rowIndex + colIndex) % 2) {
+          square.color = telegraphBlue2;
+        } else {
+          square.color = telegraphBlue1;
+          console.log('hello');
+        };
+      });
+    });
+  };
+  //resetGameBoardColors();
 
   // 9. Now let's abstract out the logic of highlighting the squares in
     //    the same row and column and
@@ -58,7 +112,67 @@
     //    method on each gamePiece so
     //    we can customize it to that gamePiece type.
 
+  var highlightRowCol = function(row, column){
+      // turn all squares in clicked row pink
+      _.each(gameBoard[row], function(square){
+        square.color = 'pink';
+      });
+      // turn all squares in clicked column pink
+      _.each(gameBoard, function(boardRow){
+        boardRow[column].color = 'pink';
+      });
+      renderGameBoard(gameBoard);
+    };
+
+  var highlightRow = function(row, column){
+          // turn all squares in clicked row pink
+      _.each(gameBoard[row], function(square){
+        square.color = 'pink';
+      });
+      renderGameBoard(gameBoard);
+    };
+
+  var highlightCol = function(row, column){
+    // turn all squares in clicked column pink
+      _.each(gameBoard, function(boardRow){
+        boardRow[column].color = 'pink';
+      });
+      renderGameBoard(gameBoard);
+    };
+
+  var highlightDiagonal = function(row, column){
+      renderGameBoard(gameBoard);
+    // decrement r and c until c becomes -1.
+    // then  add 7 to both and keep decrementing until reach starting square
+
+    // diagonal up and left
+    for (var r = row, c = column; (r >= 0 && c >= 0); r--, c--){
+      gameBoard[r][c].color = 'pink';
+    };
+    // diagonal down and right
+    for (var r = row, c = column; (r <= 7 && c <= 7); r++, c++){
+      gameBoard[r][c].color = 'pink';
+    };
+    // diagonal up and left
+    for (var r = row, c = column; (r >= 0 && c<= 7); r--, c++){
+      gameBoard[r][c].color = 'pink';
+    };
+    // diagonal up and left
+    for (var r = row, c = column; (r <= 7 && c >= 0); r++, c--){
+      gameBoard[r][c].color = 'pink';
+    };
+
+
+  };
+
     // Create a function on each gamePiece called highlightSquares.
+    var piecesInPlay = getPiecesInPlay();
+    console.log(piecesInPlay);
+    _.each(piecesInPlay, function(piece){
+      piece.highlightSquares = highlightCol;// assign highlighting function
+    });
+
+
 
     // Remove the highlightSquares from being hardcoded into our
       //  clickHandler function and
