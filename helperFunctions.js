@@ -44,7 +44,7 @@ var makeGameBoard = function(boardSize) {
   //  We could just update individual pieces,
   //    but that would require us to build out more helper functions for the students,
   //    which would decrease their feeling of ownership over the whole project.
-  //  This way also explicitly calls out 
+  //  This way also explicitly calls out
   //    that updating the state
   //    and updating the rendering are two separate things.
   //  This also lets the student focus on what they feel comfortable with

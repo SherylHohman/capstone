@@ -299,7 +299,7 @@ var arrayOfPiecesRow3 = _.filter(gameBoard[3], function(square, colIndex){
 //console.log(arrayOfPiecesRow3);
 
     // Now try adding gamePieces to a couple of different rows throughout
-      //  the board using this makePiece funcion.
+      //  the board using this makePiece function.
 
 // I'll put my pieces on a diagonal line from (0,5) to (5,0)
 for (var row = 0, col = 5; row <= 5; row++, col--){

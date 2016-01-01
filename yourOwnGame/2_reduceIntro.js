@@ -2,19 +2,20 @@
 
 //Reduce mini-sprint:
 
-// You'll notice that oftentimes what you're doing with
-  //    for loops and each statements is
-  //  reducing an entire collection down to a single answer.
+// You'll notice that oftentimes what you're doing with for loops and
+  //  each statements
+  //  is reducing an entire collection down to a single value.
 
   // This is such a common pattern that
   //  there's a canonical functional programming tool
   //  called reduce.
 
 //  Let's explore what reduce does, and
-//  how it boils a collection down to a single answer!
+//  how it boils a collection down to a single value!
 
 // What reduce does is:
-  // 1. Iterate over a collection, and invoke a callback function on each item in that collection.
+  // 1. Iterate over a collection, and invoke a callback function on
+  //    each item in that collection.
   // 2. The callback function takes two parameters:
   //      the accumulated result from the previous iteration, and
   //      the current item.
@@ -35,18 +36,17 @@
   // console.log('the sum returned from reduce is:',sum);
 
   // Let's break this down for a moment.
-  // We're creating a variable sum,
-    //  and setting it equal to
-    //  the result
-    //  of invoking reduce with some arguments.
+  // We're creating a variable sum, and
+    //  setting it equal to the result of
+    //  invoking reduce on some arguments.
 
     // Those arguments are the testArr we just created, and a callback function.
       // The callback function takes in two parameters:
       //   - the accumulated result from the previous invocation
       //     of the callback function, and
-      //   - the current value being iterated over.
-      // The callback then performs some logic on these two things
-      //   and returns a single thing.
+      //   - the current item being iterated over.
+      // The callback then performs some logic on these two things and
+      //   returns a single thing.
       // In our case, the callback function
       //   adds these two things together and
       //   returns the result of that addition.
@@ -65,12 +65,10 @@
     telegraphPrep: 8000000
   };
 
-  // Let's use reduce to
-    //  add together all the values
-    //  in our codingPoints object.
+  // Let's use reduce to:
+    //  add together all the values in our codingPoints object.
 
-  // reduce also takes an optional starting value
-    //    that we haven't been giving it yet.
+  // reduce also takes an optional starting value that we haven't used yet.
     //  What is this starting value used for?
     //  It's the value that is passed in as "accumulated" on the first iteration.
     //  Let's say that you already came in with 10 codingPoints
@@ -110,9 +108,9 @@
         //  got when we did not pass in 10 as the starting value.
 
   // Reduce is super flexible.
-    // You can use it like filter if you wanted to.
-    // Let's write out code that reduces the codingPoints object down
-    //   to just an array of values that are larger than 1000.
+    // You could use it like filter if you wanted to.
+    // Let's write out code that reduces the codingPoints object down to
+    //   an array of values that are larger than 1000.
     // So we'd expect to get the following: [1200, 8000000]
     // HINT: you can pass in anything you want as a starting value,
     //   even an empty array.
@@ -122,12 +120,12 @@
 
     var nestedArrs = [[1,2,3],[4],[5,6,7,8],[9,10]];
 
-    // We can use reduce to simplify that down to a single value
+    // We can use reduce to simplify that nested array down to a single array
     //   of [1,2,3,4,5,6,7,8,9,10].
-    // As always, when in doubt, log the variables you're working with
-    //   to the console with a clear note.
-    // Write out the code to take each value from a nested array and
-    //   push it into an accumulated array.
+    // As always, when in doubt, log the variables you're working with to
+    //   the console with a clear note.
+    // Write out the code to take each value from all of the nested arrays and
+    //   push it into an single accumulated array of values.
     // When in doubt, pseudocode!
     // Make sure you're using reduce for this!
 
@@ -139,11 +137,11 @@
       katyPerry: false
     };
 
-    // Say you have a collection of people,
-      //    and a true or false value indicating whether
-      //    you're friends with them, or not.
-      //  Maybe you want to iterate through the whole collection and
-      //    see if you're friends with everyone.
+    // Say you have a collection of people, and
+      //    a true or false value indicating whether or not
+      //    you're friends with them.
+      //  Maybe you want to iterate through the whole collection to see
+      //    if you're friends with everyone.
       //  We can use reduce for that!
 
     // Let's think about this for a moment.
